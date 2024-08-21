@@ -1,0 +1,17 @@
+{
+  "name": "FluffyBot",
+  "version": "1.0.0",
+  "description": "A simple Discord bot for FluffyCube.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Evgeniy Creonovich",
+  "license": "MIT",
+  "dependencies": {
+    "discord.js": "^14.11.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
