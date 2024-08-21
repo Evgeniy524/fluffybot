@@ -1,7 +1,7 @@
 {
   "name": "FluffyBot",
   "version": "1.0.0",
-  "description": "A simple Discord bot for FluffyCube.",
+  "description": "A simple Discord bot.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
