@@ -6,4 +6,6 @@
     "name": "играет в Minecraft",
     "type": "PLAYING"
   },
+  "version": "1.0.0",  // Версия бота
+  "createdAt": "21.08.2024"  // Дата запуска
 }
