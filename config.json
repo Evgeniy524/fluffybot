@@ -1,7 +1,7 @@
 {
   "token": "YOUR_BOT_TOKEN",
-  "prefix": "!"
-  "clientId": "YOUR_CLIENT_ID"
+  "prefix": "!",
+  "clientId": "YOUR_CLIENT_ID",
   "activity": {
     "name": "играет в Minecraft",
     "type": "PLAYING"
