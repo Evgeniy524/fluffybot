@@ -1,13 +1,13 @@
+const { Client, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
-const { Client, GatewayIntentBits, Collection } = require('discord.js');
-const config = require('./config.json');
+const config = require('./config.json'); // Импортируем конфигурацию
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+// Создаем клиента бота с необходимыми намерениями
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildPresences] });
 
+// Загружаем команды
 client.commands = new Collection();
-
-// Загружаем команды из папки commands
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
@@ -17,26 +17,35 @@ for (const file of commandFiles) {
     client.commands.set(command.name, command);
 }
 
+// Событие, когда бот готов
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
+
+    // Устанавливаем активность бота из конфигурации
+    const { name, type } = config.activity;
+    client.user.setActivity(name, { type: type })
+        .then(() => console.log(`Activity set to "${name}"`))
+        .catch(console.error);
 });
 
+// Событие, когда бот получает сообщения
 client.on('messageCreate', message => {
     if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
     const args = message.content.slice(config.prefix.length).trim().split(/ +/);
     const commandName = args.shift().toLowerCase();
 
-    const command = client.commands.get(commandName);
+    const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 
-    if (!command) return;
-
-    try {
-        command.execute(message, args);
-    } catch (error) {
-        console.error(error);
-        message.reply('There was an error executing that command.');
+    if (command) {
+        try {
+            command.execute(message, args);
+        } catch (error) {
+            console.error(error);
+            message.reply('Произошла ошибка при выполнении этой команды!');
+        }
     }
 });
 
+// Вход в Discord
 client.login(config.token);
